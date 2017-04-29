@@ -7,10 +7,14 @@ var FleetList = React.createClass({
 		var renderTrucks = () => {
 			if(trucks.length > 0 ){
 				return trucks.map(truck => {
-					return <FleetItem key={truck.id} truck={truck} />
+					return <FleetItem key={truck.id} truck={truck} onRemoveItem={this.props.onRemoveItem} onFormEdit={this.props.onFormEdit} onToggle={this.props.onToggle} />
 				})
 			} else {
-				<h3>Dodaj nową spedycję</h3>
+				return (
+					<tr>
+						<td className="empty-list">Dodaj pojazd do listy przez poniższy formularz</td>
+					</tr>
+				)
 			}
 		}
 		return (
@@ -20,7 +24,7 @@ var FleetList = React.createClass({
 				    <tr>
 				      <th>Spedycja</th>
 							<th>Pojazd</th>
-				      <th>Kierunek</th>
+				      <th>Kierunek/Trasa</th>
 				      <th>Rejon</th>
 							<th>Stawka</th>
 							<th>Spedytor</th>

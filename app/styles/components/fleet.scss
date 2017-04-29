@@ -13,3 +13,91 @@
 .pane-container:hover .dropdown-pane {
 	visibility: visible;
 }
+
+.overlay {
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1005;
+    display: block;
+    background-color: rgba(10, 10, 10, 0.45);
+    overflow-y: scroll;
+}
+
+
+.nagel {
+	background-color: #006cb7;
+}
+.completed {
+	background-color: #CCFF90 !important;
+}
+
+select {
+	background-image: none;
+}
+
+.accordion-title {
+	margin-bottom: 0;
+	font-size: 0.95rem;
+}
+
+.checkbox {
+	text-align: center;
+	label {
+		margin-top: 10px;
+	}
+}
+
+.button-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	button {
+		margin: 4px 5px;
+	}
+}
+
+.truck-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.delete {
+	h5 {
+		text-align: center;
+		margin-top: 18px;
+	}
+	.delete-button-container {
+		display: flex;
+		width: 80%;
+		margin: 30px auto;
+		justify-content: center;
+		button {
+			margin: 10px 20px;
+			padding: 1em 2em;
+		}
+	}
+}
+
+
+.form-container {
+	visibility: hidden;
+	-webkit-transition: all 0.3s ease-in;
+	-moz-transition: all 0.3s ease-in;
+	-ms-transition: all 0.3s ease-in;
+	-o-transition: all 0.3s ease-in;
+	transition: all 0.3s ease-in;
+
+}
+.show {
+	visibility: visible;
+}
+
+.empty-list {
+	position: relative;
+	left: 35%;
+	font-size: 25px;
+}

@@ -27,7 +27,8 @@ module.exports = {
 			FleetList: 'app/components/FleetList.jsx',
 			FleetItem: 'app/components/FleetItem.jsx',
 			FleetAddForm: 'app/components/FleetAddForm.jsx',
-			FleetApp: 'app/components/FleetApp.jsx'
+			FleetApp: 'app/components/FleetApp.jsx',
+			FleetCounter: 'app/components/FleetCounter.jsx'
     },
     extensions: ['', '.js', '.jsx']
   },
