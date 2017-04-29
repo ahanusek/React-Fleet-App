@@ -1,0 +1,15 @@
+.container {
+	width: 80%;
+	margin: 10% auto;
+}
+
+.pane-container {
+	display: inline-block;
+	button {
+		margin: 0px 5px 0;
+	}
+}
+
+.pane-container:hover .dropdown-pane {
+	visibility: visible;
+}

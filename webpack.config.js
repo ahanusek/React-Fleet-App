@@ -23,7 +23,11 @@ module.exports = {
   resolve: {
     root: __dirname,
     alias: {
-			applicationStyles: 'app/styles/app.scss'
+			applicationStyles: 'app/styles/app.scss',
+			FleetList: 'app/components/FleetList.jsx',
+			FleetItem: 'app/components/FleetItem.jsx',
+			FleetAddForm: 'app/components/FleetAddForm.jsx',
+			FleetApp: 'app/components/FleetApp.jsx'
     },
     extensions: ['', '.js', '.jsx']
   },
