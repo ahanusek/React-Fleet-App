@@ -29,7 +29,7 @@ module.exports = {
 			FleetAddForm: 'app/components/FleetAddForm.jsx',
 			FleetApp: 'app/components/FleetApp.jsx',
 			FleetCounter: 'app/components/FleetCounter.jsx',
-			FleetAPI: 'app/api/FleetAPI.jsx'
+			FleetAPI: 'app/api/FleetAPI.js'
     },
     extensions: ['', '.js', '.jsx']
   },

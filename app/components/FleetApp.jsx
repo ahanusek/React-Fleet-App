@@ -2,65 +2,17 @@ var React = require('react');
 var FleetList = require('FleetList');
 var FleetAddForm = require('FleetAddForm');
 var FleetCounter = require('FleetCounter');
+var FleetAPI = require('FleetAPI');
 
 var FleetApp = React.createClass({
 	getInitialState: function(){
 		return {
-			trucks: [
-				{
-					id: 0,
-					forwarding: "Supertrans",
-					forwarder: "Lukasz Tomaszewski",
-					freight: 1250,
-					vehicle: '33 MPT',
-					region: "PL0",
-					direction: "Błonie/Wyszków/Stryków",
-					sendTransportOrder: false,
-					extraInfo: {
-						email: "hanys006@gmail.com",
-						transID: 75655654,
-						phoneNumber: 6966565655,
-						truckInfo: "WRA78088/WBA055055 Dawid Jarek",
-						additionalInfo: "Moze ruszyć po 20:00"
-					}
-				},
-				{
-					id: 1,
-					forwarding: "Jomar",
-					forwarder: "Mariusz Barszcz",
-					freight: 1100,
-					vehicle: '33 MPT',
-					region: "PL2",
-					direction: "Lublin/Lubartów",
-					sendTransportOrder: false,
-					extraInfo: {
-						email: "jomar@sped.pl",
-						transID: 656565,
-						phoneNumber: 9898808,
-						truckInfo: "Sba4545/sbaw44",
-						additionalInfo: "Moze ruszyć po 21:00"
-					}
-				},
-				{
-					id: 2,
-					forwarding: "Supertrans",
-					forwarder: "Lukasz Tomaszewski",
-					freight: 1250,
-					vehicle: '33 MPT',
-					region: "PL0",
-					direction: "Błonie/Wyszków/Stryków",
-					sendTransportOrder: true,
-					extraInfo: {
-						email: "hanys006@gmail.com",
-						transID: 75655654,
-						phoneNumber: 6966565655,
-						truckInfo: "WRA78088/WBA055055 Dawid Jarek",
-						additionalInfo: "Moze ruszyć po 20:00"
-					}
-				}
-			],
+			trucks: [],
 			showSent: true
 		}
+	},
+	componentDidUpdate: function() {
+		FleetAPI.setTrucks(this.state.trucks);
 	},
 	onToggle: function(id){
 		var trucks = this.state.trucks;
@@ -73,6 +25,10 @@ var FleetApp = React.createClass({
 		this.setState({
 			trucks: [...newTrucks]
 		})
+	},
+	componentDidMount: function() {
+		var that = this;
+		FleetAPI.getTrucks(that);
 	},
 	onFormSubmit: function(newItem){
 		this.setState({

@@ -7,7 +7,7 @@ var FleetList = React.createClass({
 		var renderTrucks = () => {
 			if(trucks.length > 0 ){
 				return trucks.map(truck => {
-					return <FleetItem key={truck.id} truck={truck} onRemoveItem={this.props.onRemoveItem} onFormEdit={this.props.onFormEdit} onToggle={this.props.onToggle} />
+					return  <FleetItem key={truck.id} truck={truck} onRemoveItem={this.props.onRemoveItem} onFormEdit={this.props.onFormEdit} onToggle={this.props.onToggle} />
 				})
 			} else {
 				return (
