@@ -2,6 +2,7 @@ var React = require('react');
 var FleetList = require('FleetList');
 var FleetAddForm = require('FleetAddForm');
 var FleetCounter = require('FleetCounter');
+var FleetAPI = require('FleetAPI');
 
 var FleetApp = React.createClass({
 	getInitialState: function(){
@@ -59,7 +60,7 @@ var FleetApp = React.createClass({
 					}
 				}
 			],
-			showSent: false
+			showSent: true
 		}
 	},
 	onToggle: function(id){
@@ -72,6 +73,11 @@ var FleetApp = React.createClass({
 		});
 		this.setState({
 			trucks: [...newTrucks]
+		})
+	},
+	toggleSentStatus: function() {
+		this.setState({
+			showSent: !this.state.showSent
 		})
 	},
 	onFormSubmit: function(newItem){
@@ -102,10 +108,11 @@ var FleetApp = React.createClass({
 		})
 	},
 	render: function(){
-		var {trucks} = this.state;
+		var {trucks, showSent} = this.state;
+		var filteredFleet = FleetAPI.filterFleet(trucks, showSent);
 		return (
 			<div className="container">
-				<FleetCounter trucks={trucks}/>
+				<FleetCounter trucks={trucks} showSent={showSent} toggleSentStatus={this.toggleSentStatus}/>
 				<FleetList trucks={trucks} onRemoveItem={this.onRemoveItem} onFormEdit={this.onFormEdit} onToggle={this.onToggle}/>
 				<FleetAddForm onFormSubmit={this.onFormSubmit} />
 			</div>
