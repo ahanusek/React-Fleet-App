@@ -3,6 +3,8 @@ var ReactDOM = require('react-dom');
 var {Route, Router, IndexRoute, hashHistory} = require('react-router');
 var FleetApp = require('FleetApp');
 
+import './../playground/index.js';
+
 //Load foundation
 $(document).foundation();
 
