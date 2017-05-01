@@ -76,7 +76,7 @@ var FleetCounter = React.createClass({
 							</svg>
 							<span className="result-container">{Calculate()} MPT</span>
 					</li>
-					<li>Ukryj wysłane zlecenia:
+					<li>Pokaż wysłane zlecenia:
 						<div className="checkboxFour">
 				  		<input type="checkbox" defaultChecked={showSent} id="checkboxFourInput" name="" onChange={this.toggleSentStatus}/>
 					  	<label htmlFor="checkboxFourInput"></label>

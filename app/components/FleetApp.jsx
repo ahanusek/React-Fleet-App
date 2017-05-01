@@ -2,7 +2,6 @@ var React = require('react');
 var FleetList = require('FleetList');
 var FleetAddForm = require('FleetAddForm');
 var FleetCounter = require('FleetCounter');
-var FleetAPI = require('FleetAPI');
 
 var FleetApp = React.createClass({
 	getInitialState: function(){
@@ -75,11 +74,6 @@ var FleetApp = React.createClass({
 			trucks: [...newTrucks]
 		})
 	},
-	toggleSentStatus: function() {
-		this.setState({
-			showSent: !this.state.showSent
-		})
-	},
 	onFormSubmit: function(newItem){
 		this.setState({
 			trucks: [
@@ -100,6 +94,11 @@ var FleetApp = React.createClass({
 			trucks: [...newTrucks]
 		})
 	},
+	toggleSentStatus: function() {
+		this.setState({
+			showSent: !this.state.showSent
+		})
+	},
 	onRemoveItem: function(id){
 		this.setState({
 			trucks: this.state.trucks.filter(truck => {
@@ -109,11 +108,31 @@ var FleetApp = React.createClass({
 	},
 	render: function(){
 		var {trucks, showSent} = this.state;
-		var filteredFleet = FleetAPI.filterFleet(trucks, showSent);
+		function filterFleet(trucks, showSent){
+			var filteredFleet = trucks;
+
+			// Filter by showCompleted
+			filteredFleet = filteredFleet.filter(truck => {
+				return !truck.sendTransportOrder || showSent;
+			});
+			// Sort todos with non-completed first
+			filteredFleet = filteredFleet.sort((truckA,truckB) => {
+				if(!truckA.sendTransportOrder && truckB.sendTransportOrder){
+					return -1;
+				} else if(truckA.sendTransportOrder && !truckB.sendTransportOrder){
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+
+			return filteredFleet;
+		};
+		var filteredFleet = filterFleet(trucks, showSent);
 		return (
 			<div className="container">
 				<FleetCounter trucks={trucks} showSent={showSent} toggleSentStatus={this.toggleSentStatus}/>
-				<FleetList trucks={trucks} onRemoveItem={this.onRemoveItem} onFormEdit={this.onFormEdit} onToggle={this.onToggle}/>
+				<FleetList trucks={filteredFleet} onRemoveItem={this.onRemoveItem} onFormEdit={this.onFormEdit} onToggle={this.onToggle}/>
 				<FleetAddForm onFormSubmit={this.onFormSubmit} />
 			</div>
 		)
