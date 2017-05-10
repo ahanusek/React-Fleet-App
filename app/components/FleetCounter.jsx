@@ -1,11 +1,10 @@
 var React = require('react');
+import {connect} from 'react-redux';
+import * as actions from 'actions';
 
 var FleetCounter = React.createClass({
-	toggleSentStatus: function(){
-		this.props.toggleSentStatus();
-	},
 	render: function(){
-		var {trucks, showSent} = this.props;
+		var {trucks, showSent, dispatch} = this.props;
 
 		function Calculate(){
 			var number = 0;
@@ -78,9 +77,18 @@ var FleetCounter = React.createClass({
 					</li>
 					<li>Pokaż wysłane zlecenia:
 						<div className="checkboxFour">
-				  		<input type="checkbox" defaultChecked={showSent} id="checkboxFourInput" name="" onChange={this.toggleSentStatus}/>
+				  		<input type="checkbox" defaultChecked={showSent} id="checkboxFourInput" name="" onChange={() => {
+									dispatch(actions.toggleShowSent());
+								}}/>
 					  	<label htmlFor="checkboxFourInput"></label>
 				  	</div>
+					</li>
+					<li>
+						<form>
+							<input type="text" placeholder="Znajdź spedycję" ref="searchText" onChange={() => {
+									dispatch(actions.setSearchText(this.refs.searchText.value))
+								}}/>
+						</form>
 					</li>
 				</ul>
 			</div>
@@ -91,4 +99,8 @@ var FleetCounter = React.createClass({
 })
 
 
-module.exports = FleetCounter;
+export default connect(
+	(state) => {
+		return state;
+	}
+)(FleetCounter)

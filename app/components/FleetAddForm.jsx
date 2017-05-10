@@ -1,7 +1,9 @@
 var React = require('react');
 var uuid = require('node-uuid');
+import {connect} from 'react-redux';
+import * as actions from 'actions';
 
-var FleetAddForm = React.createClass({
+export var FleetAddForm = React.createClass({
 	getInitialState: function(){
 		return {
 			showForm: this.props.truck ? true : false,
@@ -26,17 +28,17 @@ var FleetAddForm = React.createClass({
 	},
 	onSubmitHandler: function(e){
 		e.preventDefault();
-
+		const {dispatch} = this.props;
 
 			var newTruck = {
-				id: this.props.truck ? this.props.truck.id : uuid(),
+				id: this.props.truck ? this.props.truck.id : '',
 				forwarding: this.refs.forwarding.value,
 				forwarder: this.refs.forwarder.value,
 				freight: this.refs.freight.value || "--",
 				vehicle: this.refs.vehicle.value,
 				region: this.refs.region.value,
 				direction: this.refs.direction.value,
-				sendTransportOrder: false,
+				sendTransportOrder: this.props.truck ? this.props.truck.sendTransportOrder :  false,
 				extraInfo: {
 					email: this.refs.email.value || "",
 					transID: this.refs.transID.value || "",
@@ -48,10 +50,10 @@ var FleetAddForm = React.createClass({
 
 
 		if(this.props.truck){
-			this.props.onFormEdit(newTruck);
+			dispatch(actions.startEditTruck(newTruck));
 			this.props.toggleEditMenu();
 		}  else if (newTruck.forwarder.length > 0 && newTruck.forwarding.length > 0 && newTruck.direction.length > 0 && newTruck.region.length > 0 && newTruck.vehicle.length > 0) {
-			this.props.onFormSubmit(newTruck);
+			dispatch(actions.startAddTruck(newTruck));
 			for (const key of Object.keys(this.refs)) {
 						this.refs[key].value = "";
 			}
@@ -155,4 +157,4 @@ var FleetAddForm = React.createClass({
 });
 
 
-module.exports = FleetAddForm;
+export default connect()(FleetAddForm);

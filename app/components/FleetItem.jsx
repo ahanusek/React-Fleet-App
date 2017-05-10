@@ -1,5 +1,7 @@
 var React = require('react');
-var FleetAddForm = require('FleetAddForm');
+import FleetAddForm from 'FleetAddForm';
+import {connect} from 'react-redux';
+import * as actions from 'actions';
 
 var FleetItem = React.createClass({
 	getInitialState: function(){
@@ -24,14 +26,8 @@ var FleetItem = React.createClass({
 			showEditMenu: !this.state.showEditMenu
 		})
 	},
-	onRemoveItem: function(id){
-		this.props.onRemoveItem(id);
-		this.setState({
-			showDeleteMenu: false
-		})
-	},
 	render: function(){
-		var {truck} = this.props;
+		var {truck, dispatch} = this.props;
 		return (
 			<tr className={truck.sendTransportOrder ? "completed" : ""}>
 				<td>{truck.forwarding}</td>
@@ -64,7 +60,8 @@ var FleetItem = React.createClass({
 					<div className="checkbox">
 							<label>
 								<input type="checkbox" name="sendOrder" defaultChecked={truck.sendTransportOrder} onChange={() => {
-									this.props.onToggle(truck.id)}}/>
+									dispatch(actions.startToggleSentStatus(truck.id, truck.sendTransportOrder))
+								}}/>
 						</label>
 
 					</div>
@@ -72,7 +69,7 @@ var FleetItem = React.createClass({
 				<td className="button-container"><button onClick={this.toggleEditMenu} className="button">Edytuj</button> <button className="button alert" onClick={this.toggleDeleteInfo}>Usuń</button>
 					<div className={this.state.showEditMenu ? "overlay" : ""}>
 						<div className="reveal" style={this.state.showEditMenu ? {display: "block"} : {display: "none"}}>
-						  <FleetAddForm truck={truck} onFormEdit={this.props.onFormEdit} toggleEditMenu={this.toggleEditMenu}/>
+						  <FleetAddForm truck={truck} toggleEditMenu={this.toggleEditMenu}/>
 						  <button onClick={this.toggleEditMenu} className="close-button">
 						    <span aria-hidden="true">&times;</span>
 						  </button>
@@ -82,7 +79,7 @@ var FleetItem = React.createClass({
 						<div className="reveal delete" style={this.state.showDeleteMenu ? {display: "block"} : {display: "none"}}>
 							<h5>Czy na pewno chcesz usunąć ten pojazd ?</h5>
 							<div className="delete-button-container">
-								<button className="button alert" onClick={() => {this.onRemoveItem(truck.id)}}>TAK</button>
+								<button className="button alert" onClick={() => {dispatch(actions.startRemoveTruck(truck.id))}}>TAK</button>
 							  <button className="button secondary" onClick={this.toggleDeleteInfo}>NIE</button>
 							</div>
 						  <button onClick={this.toggleDeleteInfo} className="close-button" >
@@ -100,4 +97,4 @@ var FleetItem = React.createClass({
 });
 
 
-module.exports = FleetItem;
+export default connect()(FleetItem)

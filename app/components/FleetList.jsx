@@ -1,13 +1,15 @@
-var React = require('react');
-var FleetItem = require('FleetItem');
+import React, {Component} from 'react';
+import FleetItem from 'FleetItem';
+import {connect} from 'react-redux';
+var TodoAPI = require('TodoAPI');
 
-var FleetList = React.createClass({
-	render: function(){
-		var {trucks} = this.props;
+class FleetList  extends Component {
+	render(){
+		var {trucks, showSent, searchText} = this.props;
 		var renderTrucks = () => {
 			if(trucks.length > 0 ){
-				return trucks.map(truck => {
-					return  <FleetItem key={truck.id} truck={truck} onRemoveItem={this.props.onRemoveItem} onFormEdit={this.props.onFormEdit} onToggle={this.props.onToggle} />
+				return TodoAPI.filterTrucks(trucks, showSent, searchText).map(truck => {
+					return  <FleetItem key={truck.id} truck={truck} />
 				})
 			} else {
 				return (
@@ -39,7 +41,11 @@ var FleetList = React.createClass({
 			</div>
 		)
 	}
-});
+};
 
 
-module.exports = FleetList;
+export default connect(
+	(state) => {
+		return state;
+	}
+)(FleetList)

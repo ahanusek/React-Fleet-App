@@ -1,9 +1,18 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var {Route, Router, IndexRoute, hashHistory} = require('react-router');
-var FleetApp = require('FleetApp');
+import {Route, Router, IndexRoute, hashHistory} from 'react-router';
+import {Provider} from 'react-redux';
+import FleetApp from 'FleetApp';
 
-import './../playground/index.js';
+
+import * as actions from 'actions';
+var store = require('configure').configure();
+
+store.subscribe(() => {
+	console.log('New state', store.getState())
+})
+
+store.dispatch(actions.startTrucksApp());
 
 //Load foundation
 $(document).foundation();
@@ -13,6 +22,8 @@ import 'materialize-css/js/materialize.js';
 require('style!css!sass!applicationStyles');
 
 ReactDOM.render(
-  <FleetApp/>,
+  <Provider store={store}>
+		<FleetApp/>
+  </Provider>,
   document.getElementById('app')
 );
