@@ -13,10 +13,11 @@ export const toggleShowSent = () => {
 	}
 }
 
-export const toggleSentStatus = (id) => {
+export const toggleSentStatus = (id, status) => {
 	return {
 		type: "TOGGLE_SENT_STATUS",
-		id
+		id,
+		status
 	}
 }
 
@@ -57,6 +58,31 @@ export const addTruck = (truck) => {
 		}
 }
 
+export const addTrucks = (trucks) =>{
+		return {
+			type: "ADD_TRUCKS",
+			trucks
+		}
+}
+
+export const startAddTrucks = () => {
+	return(dispatch, getState) => {
+		const trucksRef = firebaseRef.child(`trucks`);
+
+		trucksRef.on('value', (snapshot) => {
+			let trucks = snapshot.val() || {};
+			let trucksArray = []
+			for (const key of Object.keys(trucks)) {
+					trucksArray.push({
+						id: key,
+						...trucks[key]
+					})
+				};
+			dispatch(addTrucks(trucksArray));
+		})
+	}
+}
+
 export const editTruck = (truck) => {
 	return {
 		type: "EDIT_TRUCK",
@@ -79,7 +105,7 @@ export const startToggleSentStatus = (id, sendTransportOrder) => {
 		}
 
 		return truckRef.update(updates).then(() => {
-			dispatch(toggleSentStatus(id))
+			dispatch(toggleSentStatus(id, sendTransportOrder))
 		})
 	}
 }

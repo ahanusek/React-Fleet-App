@@ -12,7 +12,7 @@ store.subscribe(() => {
 	console.log('New state', store.getState())
 })
 
-store.dispatch(actions.startTrucksApp());
+store.dispatch(actions.startAddTrucks());
 
 //Load foundation
 $(document).foundation();

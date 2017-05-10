@@ -5,7 +5,6 @@ import * as actions from 'actions';
 var FleetCounter = React.createClass({
 	render: function(){
 		var {trucks, showSent, dispatch} = this.props;
-
 		function Calculate(){
 			var number = 0;
 			var newTrucks = trucks.forEach(truck => {
