@@ -14,7 +14,7 @@ try {
 	};
 	firebase.initializeApp(config);
 } catch (e) {
-
+	console.error("Firebase Error", e)
 }
 
 export const firebaseRef = firebase.database().ref();

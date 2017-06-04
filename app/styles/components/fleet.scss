@@ -1,6 +1,6 @@
 .container {
 	width: 80%;
-	margin: 10% auto;
+	margin: 5% auto;
 }
 
 .pane-container {
@@ -151,4 +151,16 @@ select {
 
 .checkboxFour input[type=checkbox]:checked + label {
 	background: #26ca28;
+}
+
+.login-container {
+	text-align: center;
+	form {
+		margin-top: 20px;
+	}
+}
+
+.logout-button {
+	text-align: right;
+	margin: 20px;
 }

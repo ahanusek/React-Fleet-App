@@ -59,7 +59,7 @@ var FleetItem = React.createClass({
 				<td width="90px">
 					<div className="checkbox">
 							<label>
-								<input type="checkbox" name="sendOrder" defaultChecked={truck.sendTransportOrder} onChange={() => {
+								<input type="checkbox" name="sendOrder" checked={truck.sendTransportOrder}  onChange={() => {
 									dispatch(actions.startToggleSentStatus(truck.id, truck.sendTransportOrder))
 								}}/>
 						</label>

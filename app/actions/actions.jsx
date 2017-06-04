@@ -131,3 +131,43 @@ export const startRemoveTruck = (id) => {
 		})
 	}
 }
+
+export const loginByEmail = (email,pass) => {
+	return(dispatch, getState) => {
+		console.log(email, pass);
+		const auth = firebase.auth();
+		const login = auth.signInWithEmailAndPassword(email, pass);
+
+		login
+			.catch(e => {
+			console.log(e.message)
+		})
+	}
+}
+
+
+export const signUpByEmail = (email,pass) => {
+	return(dispatch, getState) => {
+		console.log(email, pass);
+		const auth = firebase.auth();
+		const signup = auth.createUserWithEmailAndPassword(email, pass);
+
+		signup
+			.catch(e => {
+			console.log(e.message)
+		})
+	}
+}
+
+export const logOut = () => {
+	return(dispatch, getState) => {
+		const auth = firebase.auth();
+		const logout = auth.signOut();
+
+		logout
+			.then(() => console.log('Log Out'))
+			.catch(e => {
+			console.log(e.message)
+		})
+	}
+}

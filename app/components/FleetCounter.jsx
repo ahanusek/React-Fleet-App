@@ -2,6 +2,7 @@ var React = require('react');
 import {connect} from 'react-redux';
 import * as actions from 'actions';
 
+
 var FleetCounter = React.createClass({
 	render: function(){
 		var {trucks, showSent, dispatch} = this.props;
