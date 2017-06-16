@@ -6,10 +6,11 @@ import firebase from '../app/api/firebase.js';
 import * as actions from 'actions';
 var store = require('configure').configure();
 import router from '../app/router/index.jsx';
+import moment from 'moment';
 
 firebase.auth().onAuthStateChanged((user) => {
 	if(user){
-		console.log(user)
+		store.dispatch(actions.loginUser(user.uid, user.email))
 		hashHistory.push('/fleet');
 	} else {
 		console.log('niezalogowany')
@@ -24,7 +25,7 @@ store.subscribe(() => {
 	console.log('New state', store.getState())
 })
 
-store.dispatch(actions.startAddTrucks());
+store.dispatch(actions.startAddTrucks(moment().format('DD-MM-YYYY')));
 
 //Load foundation
 $(document).foundation();

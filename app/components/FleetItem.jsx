@@ -27,7 +27,7 @@ var FleetItem = React.createClass({
 		})
 	},
 	render: function(){
-		var {truck, dispatch} = this.props;
+		var {truck, dispatch, date} = this.props;
 		return (
 			<tr className={truck.sendTransportOrder ? "completed" : ""}>
 				<td>{truck.forwarding}</td>
@@ -60,7 +60,7 @@ var FleetItem = React.createClass({
 					<div className="checkbox">
 							<label>
 								<input type="checkbox" name="sendOrder" checked={truck.sendTransportOrder}  onChange={() => {
-									dispatch(actions.startToggleSentStatus(truck.id, truck.sendTransportOrder))
+									dispatch(actions.startToggleSentStatus(truck.id, truck.sendTransportOrder, date))
 								}}/>
 						</label>
 
@@ -79,7 +79,7 @@ var FleetItem = React.createClass({
 						<div className="reveal delete" style={this.state.showDeleteMenu ? {display: "block"} : {display: "none"}}>
 							<h5>Czy na pewno chcesz usunąć ten pojazd ?</h5>
 							<div className="delete-button-container">
-								<button className="button alert" onClick={() => {dispatch(actions.startRemoveTruck(truck.id))}}>TAK</button>
+								<button className="button alert" onClick={() => {dispatch(actions.startRemoveTruck(truck.id, date))}}>TAK</button>
 							  <button className="button secondary" onClick={this.toggleDeleteInfo}>NIE</button>
 							</div>
 						  <button onClick={this.toggleDeleteInfo} className="close-button" >
@@ -96,5 +96,9 @@ var FleetItem = React.createClass({
 	}
 });
 
-
-export default connect()(FleetItem)
+function mapStateToProps(state) {
+  return {
+    date: state.date
+  };
+}
+export default connect(mapStateToProps)(FleetItem)

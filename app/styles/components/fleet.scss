@@ -1,6 +1,6 @@
 .container {
 	width: 80%;
-	margin: 5% auto;
+	margin: 3% auto;
 }
 
 .pane-container {
@@ -103,15 +103,23 @@ select {
 }
 
 .counter-container {
+	h4 {
+		margin-left: 1.25rem;
+		font-size: 20px;
+	}
 	ul {
 		list-style: none;
 		li {
 			display: flex;
 			font-size: 20px;
+			margin-top: 10px;
 			align-items: center;
 			.result-container {
 				margin-left: 10px;
 				font-size: 20px;
+			}
+			input {
+				min-width: 250px;
 			}
 		}
 	}
@@ -161,6 +169,27 @@ select {
 }
 
 .logout-button {
-	text-align: right;
+	display: flex;
+  justify-content: space-between;
 	margin: 20px;
+}
+
+.user-info {
+	button {
+		margin-left: 1rem;
+	}
+}
+
+.controls-container {
+	display: flex;
+}
+
+.date-container {
+	align-self: flex-end;
+  margin-left: 100px;
+  margin-bottom: 1.1rem;
+	font-weight: 700;
+	input {
+		margin-left: 10px;
+	}
 }

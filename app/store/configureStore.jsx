@@ -1,13 +1,15 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
-import {showSentReducer, trucksReducer, searchTextReducer} from 'reducers';
+import {showSentReducer, trucksReducer, searchTextReducer, userAuthentication, dateReducer} from 'reducers';
 
 
 export const configure = () => {
 	const reducer = combineReducers({
 		searchText: searchTextReducer,
 		showSent: showSentReducer,
-		trucks: trucksReducer
+		trucks: trucksReducer,
+		user: userAuthentication,
+		date: dateReducer
 	});
 
 	const store = createStore(reducer, compose(

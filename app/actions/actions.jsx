@@ -21,7 +21,7 @@ export const toggleSentStatus = (id, status) => {
 	}
 }
 
-export const startAddTruck = (truck) => {
+export const startAddTruck = (truck, date) => {
 	let newTruck = truck;
 	return (dispatch, getState) => {
 		const truck = {
@@ -40,14 +40,14 @@ export const startAddTruck = (truck) => {
 						additionalInfo: newTruck.extraInfo.additionalInfo || ""
 				}
 			}
-		const trucksRef = firebaseRef.child('trucks').push(truck);
+		const trucksRef = firebaseRef.child(`trucks/${date}`).push(truck);
 
-		return trucksRef.then(() => {
-			dispatch(addTruck({
-				...truck,
-				id: trucksRef.key
-			}));
-		})
+		// return trucksRef.then(() => {
+		// 	dispatch(addTruck({
+		// 		...truck,
+		// 		id: trucksRef.key
+		// 	}));
+		// })
 	};
 };
 
@@ -65,11 +65,13 @@ export const addTrucks = (trucks) =>{
 		}
 }
 
-export const startAddTrucks = () => {
-	return(dispatch, getState) => {
-		const trucksRef = firebaseRef.child(`trucks`);
 
+export const startAddTrucks = (date) => {
+	return(dispatch, getState) => {
+		const trucksRef = firebaseRef.child(`trucks/${date}`);
+		console.log(trucksRef)
 		trucksRef.on('value', (snapshot) => {
+			console.log('value', snapshot.val());
 			let trucks = snapshot.val() || {};
 			let trucksArray = []
 			for (const key of Object.keys(trucks)) {
@@ -97,9 +99,34 @@ export const removeTruck = id => {
 	}
 }
 
-export const startToggleSentStatus = (id, sendTransportOrder) => {
+export const loginUser = (uid, email) => {
+	return {
+		type: "LOGIN_USER",
+		uid,
+		email
+	}
+}
+
+export const upgradeList = (date) => {
 	return(dispatch, getState) => {
-		const truckRef = firebaseRef.child(`trucks/${id}`);
+			let previousDate = (getState().date)
+			firebaseRef.child(`trucks/${previousDate}`).off();
+				dispatch(changeDate(date));
+				dispatch(startAddTrucks(date));
+
+		}
+	}
+
+export const changeDate = (date) => {
+	return {
+		type: "CHANGE_DATE",
+		date
+	}
+}
+
+export const startToggleSentStatus = (id, sendTransportOrder, date) => {
+	return(dispatch, getState) => {
+		const truckRef = firebaseRef.child(`trucks/${date}/${id}`);
 		const updates = {
 			sendTransportOrder: !sendTransportOrder
 		}
@@ -110,9 +137,9 @@ export const startToggleSentStatus = (id, sendTransportOrder) => {
 	}
 }
 
-export const startEditTruck = (editingTruck) => {
+export const startEditTruck = (editingTruck, date) => {
 	return(dispatch, getState) => {
-		const truckRef = firebaseRef.child(`trucks/${editingTruck.id}`);
+		const truckRef = firebaseRef.child(`trucks/${date}/${editingTruck.id}`);
 		const updates = editingTruck;
 
 		return truckRef.update(updates).then(() => {
@@ -121,9 +148,9 @@ export const startEditTruck = (editingTruck) => {
 	}
 }
 
-export const startRemoveTruck = (id) => {
+export const startRemoveTruck = (id, date) => {
 	return(dispatch, getState) => {
-		const truckRef = firebaseRef.child(`trucks/${id}`);
+		const truckRef = firebaseRef.child(`trucks/${date}/${id}`);
 
 
 		return truckRef.remove().then(() => {
@@ -134,7 +161,6 @@ export const startRemoveTruck = (id) => {
 
 export const loginByEmail = (email,pass) => {
 	return(dispatch, getState) => {
-		console.log(email, pass);
 		const auth = firebase.auth();
 		const login = auth.signInWithEmailAndPassword(email, pass);
 
@@ -148,7 +174,6 @@ export const loginByEmail = (email,pass) => {
 
 export const signUpByEmail = (email,pass) => {
 	return(dispatch, getState) => {
-		console.log(email, pass);
 		const auth = firebase.auth();
 		const signup = auth.createUserWithEmailAndPassword(email, pass);
 

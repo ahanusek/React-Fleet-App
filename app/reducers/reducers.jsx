@@ -1,4 +1,5 @@
 var uuid = require('node-uuid');
+import moment from 'moment';
 
 export const searchTextReducer = (state = '', action) => {
 		switch(action.type){
@@ -52,6 +53,27 @@ export const trucksReducer = (state = [], action) => {
 				}
 			})
 		default:
+				return state;
+		}
+}
+
+export const userAuthentication = (state = {}, action) => {
+		switch(action.type){
+			case 'LOGIN_USER':
+				return {
+					uid: action.uid,
+					email: action.email
+				};
+			default:
+				return state;
+		}
+}
+
+export const dateReducer = (state = moment().format('DD-MM-YYYY'), action) => {
+		switch(action.type){
+			case 'CHANGE_DATE':
+				return action.date
+			default:
 				return state;
 		}
 }

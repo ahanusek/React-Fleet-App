@@ -2,15 +2,80 @@ var React = require('react');
 var uuid = require('node-uuid');
 import {connect} from 'react-redux';
 import * as actions from 'actions';
+import Autosuggest from 'react-autosuggest';
+
+
+const languages = [
+  {
+    name: 'Supertrans',
+    year: 1972
+  },
+  {
+    name: 'Superdrob',
+    year: 2012
+  },
+	{
+    name: 'Jomar',
+    year: 2012
+  },
+	{
+    name: 'Materkowska',
+    year: 2012
+  }
+];
+
+
+// Teach Autosuggest how to calculate suggestions for any given input value.
+const getSuggestions = value => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+
+  return inputLength === 0 ? [] : languages.filter(lang =>
+    lang.name.toLowerCase().slice(0, inputLength) === inputValue
+  );
+};
+
+// When suggestion is clicked, Autosuggest needs to populate the input element
+// based on the clicked suggestion. Teach Autosuggest how to calculate the
+// input value for every given suggestion.
+const getSuggestionValue = suggestion => suggestion.name;
+
+// Use your imagination to render suggestions.
+const renderSuggestion = suggestion => (
+  <div>
+    {suggestion.name}
+  </div>
+);
+
 
 export var FleetAddForm = React.createClass({
 	getInitialState: function(){
 		return {
 			showForm: this.props.truck ? true : false,
 			additionalOption: false,
-			truckOption: false
+			truckOption: false,
+			value: '',
+			suggestions: []
 		}
 	},
+
+	changeForwardingField: function(e){
+			this.setState({
+				value: e.value
+		});
+	},
+	onSuggestionsFetchRequested: function ({ value })  {
+		this.setState({
+			suggestions: getSuggestions(value)
+		});
+	},
+
+// Autosuggest will call this function every time you need to clear suggestions.
+	onSuggestionsClearRequested: function() {
+			this.setState({
+				suggestions: []
+			});
+		},
 	toggleForm: function(){
 		this.setState({
 			showForm: !this.state.showForm
@@ -28,7 +93,7 @@ export var FleetAddForm = React.createClass({
 	},
 	onSubmitHandler: function(e){
 		e.preventDefault();
-		const {dispatch} = this.props;
+		const {dispatch, date} = this.props;
 
 			var newTruck = {
 				id: this.props.truck ? this.props.truck.id : '',
@@ -50,10 +115,10 @@ export var FleetAddForm = React.createClass({
 
 
 		if(this.props.truck){
-			dispatch(actions.startEditTruck(newTruck));
+			dispatch(actions.startEditTruck(newTruck, date));
 			this.props.toggleEditMenu();
 		}  else if (newTruck.forwarder.length > 0 && newTruck.forwarding.length > 0 && newTruck.direction.length > 0 && newTruck.region.length > 0 && newTruck.vehicle.length > 0) {
-			dispatch(actions.startAddTruck(newTruck));
+			dispatch(actions.startAddTruck(newTruck, date));
 			for (const key of Object.keys(this.refs)) {
 						this.refs[key].value = "";
 			}
@@ -65,7 +130,13 @@ export var FleetAddForm = React.createClass({
 
 	},
 	render: function(){
-		var {truck} = this.props;
+		var {truck, value, suggestions} = this.props;
+		// Autosuggest will pass through all these props to the input element.
+    const inputProps = {
+      placeholder: 'Type a programming language',
+      value,
+      onChange: this.changeForwardingField
+    };
 		return (
 			<div>
 				<div style={ this.props.truck ? {display: "none"} : {display: "block"} }>
@@ -76,7 +147,7 @@ export var FleetAddForm = React.createClass({
 						<div className="row">
 							<div className="small-6 columns">
 								<label>Przewoźnik
-									<input type="text" ref="forwarding" placeholder="Nazwa i miasto (wymagane)" defaultValue={truck ? truck.forwarding : ""}/>
+									<input type="text" ref="forwarding" onChange={this.changeForwardingField} placeholder="Nazwa i miasto (wymagane)" defaultValue={truck ? truck.forwarding : ""}/>
 								</label>
 								<label>Rejon
 									<select ref="region"  defaultValue={truck ? truck.region : ""}>
@@ -156,5 +227,9 @@ export var FleetAddForm = React.createClass({
 	}
 });
 
-
-export default connect()(FleetAddForm);
+function mapStateToProps(state) {
+  return {
+    date: state.date
+  };
+}
+export default connect(mapStateToProps)(FleetAddForm);

@@ -22,6 +22,7 @@ var FleetCounter = React.createClass({
 		};
 		return (
 			<div className="counter-container">
+				<h4>Potencjał floty:</h4>
 				<ul>
 					<li>
 						<svg id="Layer_1" x="0px" y="0px" viewBox="0 0 512.001 512.001"  width="70px" height="70px">
